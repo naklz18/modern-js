@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лучшие практики | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link" aria-current="page">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>
+              </ul>
+        </nav>
+    </header>
+
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Критерии выбора и лучшие практики</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Как писать современный, читаемый и производительный JavaScript
+                </p>
+
+                <!-- КАРТИНКА с srcset/sizes -->
+                <img 
+                    src="../img/js-code-small.jpg"
+                    srcset="../img/js-code-small.jpg 480w,
+                            ../img/js-code-large.jpg 1024w"
+                    sizes="(max-width: 767px) 100vw,
+                           (min-width: 768px) 600px"
+                    alt="Пример современного JavaScript-кода в редакторе"
+                    title="Современный JavaScript на практике"
+                    class="main-image">
+
+                <section class="mb-5">
+                    <h2>Использование let и const вместо var</h2>
+                    <p>Современный JavaScript-код должен использовать <code>let</code> и <code>const</code> вместо <code>var</code>. Это обеспечивает блочную область видимости, которая более предсказуема и снижает количество ошибок, связанных с неожиданным доступом к переменным.</p>
+                    <pre><code>// Плохо
+var count = 0;
+
+// Хорошо
+const MAX = 100;
+let count = 0;</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Предпочтение иммутабельности</h2>
+                    <p>Иммутабельные операции снижают количество побочных эффектов и делают код более предсказуемым. Вместо мутирующих методов (<code>sort()</code>, <code>reverse()</code>, <code>splice()</code>) следует использовать их иммутабельные аналоги (<code>toSorted()</code>, <code>toReversed()</code>, <code>toSpliced()</code>).</p>
+                    <pre><code>// Плохо — мутирует исходный массив
+users.sort((a, b) => a.age - b.age);
+
+// Хорошо — возвращает новый массив
+const sorted = users.toSorted((a, b) => a.age - b.age);</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Функциональные паттерны</h2>
+                    <p>Функциональный стиль программирования с использованием <code>map</code>, <code>filter</code>, <code>reduce</code> и других методов массивов делает код более декларативным и читаемым. Цепочки методов позволяют выражать сложные трансформации данных лаконично и понятно.</p>
+                    <pre><code>const total = orders
+    .filter(order => order.status === "paid")
+    .map(order => order.amount)
+    .reduce((sum, amount) => sum + amount, 0);</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Асинхронное программирование</h2>
+                    <p>Для асинхронных операций следует предпочитать <code>async/await</code> вместо цепочек <code>.then()</code>. Это делает код более линейным и легким для отладки. Избегайте использования <code>await</code> внутри циклов, где это возможно, — вместо этого используйте <code>Promise.all()</code> для параллельного выполнения.</p>
+                    <pre><code>// Плохо — последовательно
+for (const id of ids) {
+    const user = await getUser(id);
+    results.push(user);
+}
+
+// Хорошо — параллельно
+const results = await Promise.all(
+    ids.map(id => getUser(id))
+);</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Обработка ошибок</h2>
+                    <p>Всегда включайте обработку ошибок в асинхронный код. <code>try/catch</code> вокруг <code>await</code> позволяет перехватывать ошибки так же, как в синхронном коде. Для промисов без <code>async/await</code> используйте <code>.catch()</code>.</p>
+                    <pre><code>async function loadUser(id) {
+    try {
+        const user = await fetchUser(id);
+        return user;
+    } catch (error) {
+        console.error("Не удалось загрузить пользователя:", error);
+        return null;
+    }
+}</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Производительность</h2>
+                    <p>Современный JavaScript предлагает несколько паттернов для оптимизации производительности:</p>
+                    <ul>
+                        <li><strong>Батчинг DOM-обновлений</strong> снижает количество перерисовок.</li>
+                        <li><strong>Web Workers</strong> позволяют вынести тяжёлые вычисления из основного потока.</li>
+                        <li><strong>Избегание длинных задач</strong> (более 50 мс) сохраняет отзывчивость интерфейса.</li>
+                        <li><strong>Сохранение формы объектов</strong> (hidden classes) помогает движку V8 оптимизировать код.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Инструменты сборки и транспиляции</h2>
+                    <p>Современная разработка на JavaScript редко обходится без инструментов сборки:</p>
+                    <ul>
+                        <li><strong>Babel</strong> — транспайлер, преобразует современный JavaScript в код, совместимый со старыми браузерами.</li>
+                        <li><strong>Webpack</strong> — модульный бандлер, собирает все зависимости проекта в один или несколько файлов.</li>
+                        <li><strong>Vite</strong> — современная альтернатива с молниеносным запуском dev-сервера и использованием esbuild/Rollup.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Видео-обзор</h2>
+                    <p>Посмотрите короткое видео о том, как современный JavaScript применяется на практике.</p>
+                    <div class="video-wrapper">
+                        <iframe 
+                            src="https://rutube.ru/play/embed/e89f3f73dff344dae66781029d342f44/" 
+                            title="Обзор современного JavaScript"
+                            allow="clipboard-write; autoplay"
+                            allowfullscreen
+                            loading="lazy">
+                        </iframe>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сводная таблица практик</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Что использовать и что избегать</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Область</th>
+                                    <th scope="col">Избегать</th>
+                                    <th scope="col">Предпочитать</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Переменные</th>
+                                    <td><code>var</code></td>
+                                    <td><code>const</code>, <code>let</code></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Функции</th>
+                                    <td><code>function() {}</code> в колбэках</td>
+                                    <td>Стрелочные функции</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Строки</th>
+                                    <td>Конкатенация через <code>+</code></td>
+                                    <td>Шаблонные строки</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Асинхронность</th>
+                                    <td>Цепочки <code>.then()</code></td>
+                                    <td><code>async/await</code></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Массивы</th>
+                                    <td><code>sort()</code>, <code>reverse()</code></td>
+                                    <td><code>toSorted()</code>, <code>toReversed()</code></td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Проверки</th>
+                                    <td>Многоуровневые <code>if</code></td>
+                                    <td><code>?.</code>, <code>??</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="es2020-2025.html">ES2020–ES2025</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="sources.html">Источники</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Настройте ESLint с конфигурацией <code>eslint:recommended</code> и правилами для ES2023+ — это автоматически отловит большинство нарушений из этой страницы.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

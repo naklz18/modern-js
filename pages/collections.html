@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Коллекции и методы массивов | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link" aria-current="page">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>                                           
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Коллекции и методы массивов</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Map, Set и функциональные паттерны
+                </p>
+
+                <section class="mb-5">
+                    <h2>Map</h2>
+                    <p><code>Map</code> — это коллекция пар «ключ-значение», где ключами могут быть любые типы данных, включая объекты. В отличие от обычных объектов, Map сохраняет порядок вставки, поддерживает итерацию и имеет свойство <code>size</code>.</p>
+
+                    <pre><code>const map = new Map();
+map.set("name", "Иван");
+map.set(42, "ответ");
+map.set(true, "истина");
+
+console.log(map.get("name")); // "Иван"
+console.log(map.size);        // 3
+console.log(map.has(42));     // true</code></pre>
+
+                    <h3 class="mt-4">Перебор Map</h3>
+                    <pre><code>for (const [key, value] of map) {
+    console.log(key, value);
+}
+
+map.forEach((value, key) => {
+    console.log(key, "=>", value);
+});</code></pre>
+
+                    <h3 class="mt-4">Когда использовать Map вместо объекта</h3>
+                    <ul>
+                        <li>Ключи не строки (числа, объекты, булевы значения).</li>
+                        <li>Важен порядок вставки.</li>
+                        <li>Нужно часто добавлять и удалять элементы.</li>
+                        <li>Нужно знать точное количество элементов.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Set</h2>
+                    <p><code>Set</code> — это коллекция уникальных значений. Set автоматически удаляет дубликаты.</p>
+
+                    <pre><code>const set = new Set([1, 2, 2, 3, 3, 3]);
+console.log(set);      // Set(3) {1, 2, 3}
+console.log(set.size); // 3
+
+set.add(4);
+set.delete(1);
+console.log(set.has(2)); // true</code></pre>
+
+                    <h3 class="mt-4">Удаление дубликатов из массива</h3>
+                    <pre><code>const numbers = [1, 2, 2, 3, 3, 4];
+const unique = [...new Set(numbers)];
+console.log(unique); // [1, 2, 3, 4]</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>WeakMap и WeakSet</h2>
+                    <p>Это «слабые» версии Map и Set, которые не предотвращают сборку мусора для своих ключей (в WeakMap) или значений (в WeakSet). Они полезны для кэширования, хранения метаданных и предотвращения утечек памяти.</p>
+
+                    <pre><code>const cache = new WeakMap();
+
+function process(obj) {
+    if (cache.has(obj)) {
+        return cache.get(obj);
+    }
+    const result = obj.value * 2;
+    cache.set(obj, result);
+    return result;
+}</code></pre>
+
+                    <p><strong>Важно:</strong> в WeakMap и WeakSet ключи/значения — только объекты, и они недоступны для перебора (нет <code>size</code> и итераторов).</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Методы массивов: map, filter, reduce</h2>
+                    <p>Трио <code>map</code>, <code>filter</code> и <code>reduce</code> стало стандартным инструментом для трансформации, фильтрации и агрегации данных.</p>
+
+                    <h3 class="mt-4">map — преобразование</h3>
+                    <pre><code>const nums = [1, 2, 3];
+const doubled = nums.map(n => n * 2);
+console.log(doubled); // [2, 4, 6]</code></pre>
+
+                    <h3 class="mt-4">filter — фильтрация</h3>
+                    <pre><code>const nums = [1, 2, 3, 4, 5];
+const even = nums.filter(n => n % 2 === 0);
+console.log(even); // [2, 4]</code></pre>
+
+                    <h3 class="mt-4">reduce — свёртка</h3>
+                    <pre><code>const nums = [1, 2, 3, 4];
+const sum = nums.reduce((acc, n) => acc + n, 0);
+console.log(sum); // 10</code></pre>
+
+                    <h3 class="mt-4">Цепочки методов</h3>
+                    <pre><code>const users = [
+    { name: "Иван", age: 30 },
+    { name: "Мария", age: 17 },
+    { name: "Пётр", age: 25 }
+];
+
+const adultNames = users
+    .filter(u => u.age >= 18)
+    .map(u => u.name);
+
+console.log(adultNames); // ["Иван", "Пётр"]</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Другие полезные методы</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Методы массивов и их назначение</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Метод</th>
+                                    <th scope="col">Назначение</th>
+                                    <th scope="col">Мутирует массив?</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><th scope="row">find</th><td>Первый элемент, подходящий под условие</td><td>Нет</td></tr>
+                                <tr><th scope="row">findIndex</th><td>Индекс первого подходящего элемента</td><td>Нет</td></tr>
+                                <tr><th scope="row">findLast</th><td>Последний подходящий элемент (ES2023)</td><td>Нет</td></tr>
+                                <tr><th scope="row">some</th><td>Есть ли хотя бы один подходящий</td><td>Нет</td></tr>
+                                <tr><th scope="row">every</th><td>Все ли элементы подходят</td><td>Нет</td></tr>
+                                <tr><th scope="row">flat</th><td>Разворачивает вложенные массивы</td><td>Нет</td></tr>
+                                <tr><th scope="row">flatMap</th><td>map + flat</td><td>Нет</td></tr>
+                                <tr><th scope="row">at</th><td>Элемент по относительному индексу</td><td>Нет</td></tr>
+                                <tr><th scope="row">toSorted</th><td>Сортировка без мутации (ES2023)</td><td>Нет</td></tr>
+                                <tr><th scope="row">toReversed</th><td>Реверс без мутации (ES2023)</td><td>Нет</td></tr>
+                                <tr><th scope="row">with</th><td>Замена по индексу без мутации (ES2023)</td><td>Нет</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Иммутабельные альтернативы</h2>
+                    <p>Современный JavaScript предпочитает иммутабельные методы — они не меняют исходный массив, а возвращают новый.</p>
+
+                    <pre><code>const nums = [3, 1, 2];
+
+// Старый способ (мутирует)
+nums.sort();      // [1, 2, 3], но nums изменён
+
+// Новый способ (иммутабельный)
+const sorted = nums.toSorted(); // nums не изменён</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Используйте <code>Map</code>, когда ключи — не строки или важно сохранить порядок вставки.</li>
+                        <li><code>Set</code> — идеальный инструмент для удаления дубликатов.</li>
+                        <li>WeakMap и WeakSet — для кэша и метаданных, привязанных к объектам.</li>
+                        <li>Предпочитайте <code>map</code>/<code>filter</code>/<code>reduce</code> циклу <code>for</code> — код декларативнее.</li>
+                        <li>Используйте иммутабельные методы (<code>toSorted</code>, <code>toReversed</code>, <code>with</code>) вместо мутирующих.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="destructuring.html">Деструктуризация</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Если <code>reduce</code> кажется сложным — начните с <code>map</code> и <code>filter</code>. Они покрывают 90% задач по работе с массивами.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

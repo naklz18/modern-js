@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Переменные: let и const | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link" aria-current="page">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- КОНТЕНТ -->
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <!-- MAIN -->
+            <main class="column one-half">
+                <h1>Переменные: let и const</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Блочная область видимости и иммутабельность
+                </p>
+
+                <section class="mb-5">
+                    <h2>Проблема старого подхода</h2>
+                    <p>Одним из первых и наиболее важных улучшений ES6 стало введение ключевых слов <code>let</code> и <code>const</code>, которые пришли на смену <code>var</code>. До ES6 <code>var</code> был единственным способом объявления переменных, но он обладал функциональной областью видимости и мог приводить к запутанному поведению из-за поднятия (hoisting) и случайного повторного объявления.</p>
+                    <p>Классическая проблема — утечка переменной за пределы блока <code>if</code> или <code>for</code>:</p>
+                    <pre><code>if (true) {
+    var message = "Привет";
+}
+console.log(message); // "Привет" — переменная «утекла» наружу</code></pre>
+                    <p>Такое поведение часто приводило к трудноуловимым багам, особенно в больших функциях с множеством блоков.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Ключевое слово let</h2>
+                    <p><code>let</code> позволяет объявлять переменные с <strong>блочной областью видимости</strong> — они доступны только внутри блока кода, в котором были объявлены. Блоком считается всё, что находится внутри фигурных скобок: тело <code>if</code>, <code>for</code>, <code>while</code> или просто отдельный <code>{ }</code>.</p>
+                    <pre><code>if (true) {
+    let message = "Привет";
+    console.log(message); // "Привет"
+}
+console.log(message); // ReferenceError: message is not defined</code></pre>
+                    <p>Переменную, объявленную через <code>let</code>, можно переприсваивать:</p>
+                    <pre><code>let count = 0;
+count = 1;
+count = 2;
+console.log(count); // 2</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Ключевое слово const</h2>
+                    <p><code>const</code> также использует блочную область видимости, но <strong>запрещает повторное присваивание значения</strong>. Это помогает избежать случайных изменений и делает код более предсказуемым.</p>
+                    <pre><code>const PI = 3.14;
+PI = 3.15; // TypeError: Assignment to constant variable</code></pre>
+                    <p><strong>Важно:</strong> <code>const</code> не делает объект или массив «замороженным». Нельзя переприсвоить саму переменную, но содержимое объекта или массива менять можно:</p>
+                    <pre><code>const user = { name: "Иван" };
+user.name = "Пётр"; // OK — меняем свойство объекта
+user = {};          // Ошибка — нельзя переприсвоить переменную
+
+const list = [1, 2, 3];
+list.push(4);       // OK — мутируем массив
+list = [];          // Ошибка — нельзя переприсвоить переменную</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сравнение: var, let, const</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Сравнение способов объявления переменных</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Характеристика</th>
+                                    <th scope="col">var</th>
+                                    <th scope="col">let</th>
+                                    <th scope="col">const</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Область видимости</th>
+                                    <td>Функциональная</td>
+                                    <td>Блочная</td>
+                                    <td>Блочная</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Поднятие (hoisting)</th>
+                                    <td>Да</td>
+                                    <td>Да (но TDZ)</td>
+                                    <td>Да (но TDZ)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Переприсваивание</th>
+                                    <td>Да</td>
+                                    <td>Да</td>
+                                    <td>Нет</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Повторное объявление</th>
+                                    <td>Да</td>
+                                    <td>Нет</td>
+                                    <td>Нет</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Рекомендация</th>
+                                    <td>Не использовать</td>
+                                    <td>По необходимости</td>
+                                    <td>По умолчанию</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшая практика</h2>
+                    <p>Используйте <code>const</code> по умолчанию и прибегайте к <code>let</code> только тогда, когда переменной действительно нужно присвоить новое значение. Такой подход:</p>
+                    <ul>
+                        <li>снижает количество случайных изменений;</li>
+                        <li>делает намерения автора кода явными;</li>
+                        <li>упрощает чтение и отладку;</li>
+                        <li>предотвращает целый класс ошибок, связанных с переприсваиванием.</li>
+                    </ul>
+                    <p>Ключевое слово <code>var</code> в современном коде не используется — оно оставлено исключительно для обратной совместимости со старыми скриптами.</p>
+                </section>
+            </main>
+
+            <!-- САЙДБАР -->
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="destructuring.html">Деструктуризация</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Начните новый файл с объявления всех <code>const</code> — это сразу задаст структуру кода и подскажет, где действительно нужны изменяемые значения.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

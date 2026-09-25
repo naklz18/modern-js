@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Стрелочные функции | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link" aria-current="page">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>
+              </ul>
+        </nav>
+    </header>
+
+    <!-- КОНТЕНТ -->
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Стрелочные функции и шаблонные строки</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Краткий синтаксис и лексический this
+                </p>
+
+                <section class="mb-5">
+                    <h2>Стрелочные функции</h2>
+                    <p>Стрелочные функции (arrow functions) предлагают более краткий синтаксис для записи функций и принципиально иначе обрабатывают контекст <code>this</code>. В отличие от обычных функций, стрелочные функции не создают собственный <code>this</code> — они заимствуют его из окружающей области видимости (лексическая привязка).</p>
+
+                    <h3 class="mt-4">Синтаксис</h3>
+                    <p>Полный вариант записи:</p>
+                    <pre><code>const sum = (a, b) =&gt; {
+    return a + b;
+};</code></pre>
+
+                    <p>Если тело функции состоит из одного выражения, можно опустить фигурные скобки и ключевое слово <code>return</code>:</p>
+                    <pre><code>const sum = (a, b) =&gt; a + b;</code></pre>
+
+                    <p>Если параметр один, скобки тоже можно опустить:</p>
+                    <pre><code>const double = x =&gt; x * 2;</code></pre>
+
+                    <p>Если параметров нет — нужны пустые скобки:</p>
+                    <pre><code>const greet = () =&gt; "Привет!";</code></pre>
+
+                    <h3 class="mt-4">Возврат объекта</h3>
+                    <p>Если нужно вернуть объект из стрелочной функции, его следует обернуть в круглые скобки, иначе фигурные скобки будут восприняты как тело функции:</p>
+                    <pre><code>// Неправильно — вернёт undefined
+const makeUser = name =&gt; { name: name };
+
+// Правильно
+const makeUser = name =&gt; ({ name: name });</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лексический this</h2>
+                    <p>Это ключевое отличие стрелочных функций. В обычных функциях <code>this</code> определяется тем, <strong>как</strong> функция была вызвана. В стрелочных — тем, <strong>где</strong> она была объявлена.</p>
+
+                    <p>Классическая проблема с колбэками:</p>
+                    <pre><code>const timer = {
+    seconds: 0,
+    start() {
+        setInterval(function() {
+            this.seconds++; // this — не timer, а глобальный объект
+            console.log(this.seconds); // NaN
+        }, 1000);
+    }
+};</code></pre>
+
+                    <p>Решение через стрелочную функцию:</p>
+                    <pre><code>const timer = {
+    seconds: 0,
+    start() {
+        setInterval(() =&gt; {
+            this.seconds++; // this — это timer
+            console.log(this.seconds); // 1, 2, 3...
+        }, 1000);
+    }
+};</code></pre>
+
+                    <p><strong>Правило:</strong> стрелочные функции удобны для колбэков, обработчиков событий и цепочек промисов, где традиционные функции могли привести к потере контекста. Но их <strong>нельзя</strong> использовать как методы объектов или конструкторы.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Шаблонные строки (Template Literals)</h2>
+                    <p>Шаблонные строки — это строковые литералы, заключённые в обратные кавычки (<code>`</code>), которые поддерживают интерполяцию выражений через синтаксис <code>${...}</code> и позволяют создавать многострочные строки без использования специальных символов.</p>
+
+                    <h3 class="mt-4">Интерполяция</h3>
+                    <p>До ES6 для конкатенации строк приходилось использовать оператор <code>+</code>:</p>
+                    <pre><code>const name = "Иван";
+const age = 30;
+const greeting = "Привет, " + name + "! Тебе " + age + " лет.";</code></pre>
+
+                    <p>С шаблонными строками это выглядит элегантнее:</p>
+                    <pre><code>const greeting = `Привет, ${name}! Тебе ${age} лет.`;</code></pre>
+
+                    <p>Внутри <code>${...}</code> можно помещать любые выражения, а не только переменные:</p>
+                    <pre><code>const price = 100;
+const total = `Итого: ${price * 1.2} руб.`;</code></pre>
+
+                    <h3 class="mt-4">Многострочные строки</h3>
+                    <p>Раньше для переноса строк приходилось использовать <code>\n</code>:</p>
+                    <pre><code>const html = "&lt;div&gt;\n  &lt;p&gt;Текст&lt;/p&gt;\n&lt;/div&gt;";</code></pre>
+
+                    <p>Теперь можно просто писать как есть:</p>
+                    <pre><code>const html = `
+&lt;div&gt;
+    &lt;p&gt;Текст&lt;/p&gt;
+&lt;/div&gt;`;</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сравнение подходов</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Обычные функции vs стрелочные</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Характеристика</th>
+                                    <th scope="col">Обычная функция</th>
+                                    <th scope="col">Стрелочная функция</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Краткий синтаксис</th>
+                                    <td>Нет</td>
+                                    <td>Да</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Собственный this</th>
+                                    <td>Да</td>
+                                    <td>Нет (лексический)</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Можно использовать как метод</th>
+                                    <td>Да</td>
+                                    <td>Не рекомендуется</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Можно использовать как конструктор</th>
+                                    <td>Да</td>
+                                    <td>Нет</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Объект arguments</th>
+                                    <td>Да</td>
+                                    <td>Нет</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Используйте стрелочные функции для колбэков и обработчиков, где важно сохранить <code>this</code>.</li>
+                        <li>Не используйте стрелочные функции как методы объектов — они не получат собственный <code>this</code>.</li>
+                        <li>Шаблонные строки предпочтительнее конкатенации через <code>+</code> — они короче и читаемее.</li>
+                        <li>Для сложной логики в интерполяции (например, тернарных выражений) лучше вынести её в отдельную переменную.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="destructuring.html">Деструктуризация</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Если внутри <code>${...}</code> становится тесно — это знак, что логику лучше вынести в отдельную переменную или функцию перед формированием строки.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

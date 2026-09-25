@@ -1,0 +1,291 @@
+/* =========================================================
+   JS MODERN — Кастомные стили поверх Primer CSS
+   ========================================================= */
+
+/* --- Шапка (sticky: резервирует место в потоке) --- */
+.Header {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+}
+
+.Header--hidden {
+    transform: translateY(-100%);
+}
+
+body {
+    padding-top: 0;
+}
+
+/* --- Бургер-меню --- */
+#burger {
+    display: block;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+}
+
+/* --- Навигация (скрыта по умолчанию) --- */
+.Header-nav {
+    display: none;
+    width: 100%;
+    background-color: var(--color-canvas-default);
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.Header-nav--active {
+    display: block;
+    animation: fadeDown 0.3s ease-out;
+}
+
+@keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.Header-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.Header-menu li {
+    border-bottom: 1px solid var(--color-border-default);
+}
+
+.Header-menu li:last-child {
+    border-bottom: none;
+}
+
+/* Пункты мобильного меню — как «кнопки» с подсветкой */
+.Header-menu a {
+    display: block;
+    padding: 12px 20px;
+    margin: 4px 8px;
+    border-radius: 6px;
+    text-decoration: none;
+    color: var(--color-fg-default);
+    background-color: var(--color-canvas-subtle);
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.Header-menu a:hover {
+    background-color: var(--color-accent-subtle, rgba(56, 139, 253, 0.15));
+    color: var(--color-accent-fg);
+}
+
+.Header-menu a[aria-current="page"] {
+    color: var(--color-accent-fg);
+    background-color: var(--color-accent-subtle, rgba(56, 139, 253, 0.15));
+    font-weight: 600;
+    border-left: 3px solid var(--color-accent-fg);
+}
+
+/* --- Основной контент и сайдбар --- */
+@media (max-width: 767px) {
+    .columns {
+        flex-direction: column;
+    }
+    .column.one-half {
+        width: 100%;
+    }
+}
+
+/* --- Таблица (адаптивная) --- */
+.table-wrapper {
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+table caption {
+    text-align: left;
+    font-style: italic;
+    margin-bottom: 10px;
+    opacity: 0.8;
+}
+
+th, td {
+    padding: 10px 15px;
+    border: 1px solid var(--color-border-default);
+    text-align: left;
+}
+
+th {
+    background-color: var(--color-canvas-subtle);
+    font-weight: 600;
+}
+
+/* --- Формы --- */
+.form-control {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border-default);
+    border-radius: 6px;
+    background-color: var(--color-canvas-default);
+    color: var(--color-fg-default);
+}
+
+/* --- Кнопки --- */
+.btn-block {
+    display: block;
+    width: 100%;
+}
+
+/* --- Подвал --- */
+.footer {
+    background-color: var(--color-canvas-subtle);
+}
+
+.footer ul {
+    padding: 0;
+}
+
+.footer a {
+    color: var(--color-fg-muted);
+    text-decoration: none;
+}
+
+.footer a:hover {
+    color: var(--color-accent-fg);
+}
+
+/* --- Видео --- */
+.video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;
+    height: 0;
+    overflow: hidden;
+    margin: 20px 0;
+    border-radius: 8px;
+}
+
+.video-wrapper iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+/* --- Главное изображение --- */
+.main-image {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 0 20px;
+}
+
+/* --- Список источников --- */
+.sources-list {
+    padding-left: 1.5rem;
+}
+
+.sources-list li {
+    margin-bottom: 0.6rem;
+    line-height: 1.5;
+}
+
+/* --- Адаптивность (Desktop-first) --- */
+@media (min-width: 768px) {
+    #burger {
+        display: none;
+    }
+
+    .Header-nav {
+        display: flex !important;
+        width: auto;
+        background: none;
+        border: none;
+    }
+
+    .Header-menu {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 6px 8px;
+        background-color: var(--color-canvas-subtle);
+        border-radius: 8px;
+    }
+
+    .Header-menu li {
+        border-bottom: none;
+    }
+
+    /* Изначальная подсветка каждого пункта меню */
+    .Header-menu a {
+        padding: 6px 12px;
+        margin: 0;
+        white-space: nowrap;
+        border-radius: 6px;
+        background-color: var(--color-canvas-default);
+        color: var(--color-fg-default);
+        transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
+        box-shadow: inset 0 0 0 1px var(--color-border-default);
+    }
+
+    /* Усиление подсветки при наведении */
+    .Header-menu a:hover {
+        background-color: var(--color-accent-subtle, rgba(56, 139, 253, 0.15));
+        color: var(--color-accent-fg);
+        box-shadow: inset 0 0 0 1px var(--color-accent-fg);
+    }
+
+    /* Активный пункт — выраженная подсветка */
+    .Header-menu a[aria-current="page"] {
+        background-color: var(--color-accent-subtle, rgba(56, 139, 253, 0.15));
+        color: var(--color-accent-fg);
+        font-weight: 600;
+        border-left: none;
+        border-bottom: none;
+        box-shadow: inset 0 0 0 1px var(--color-accent-fg);
+    }
+
+    /* Фокус с клавиатуры */
+    .Header-menu a:focus-visible {
+        outline: 2px solid var(--color-accent-fg);
+        outline-offset: 2px;
+    }
+}
+
+/* --- Блоки с кодом --- */
+pre {
+    background-color: var(--color-canvas-subtle);
+    border: 1px solid var(--color-border-default);
+    border-radius: 6px;
+    padding: 15px;
+    overflow-x: auto;
+    margin: 15px 0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+code {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--color-fg-default);
+}
+
+pre code {
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+/* Инлайновый код */
+p code,
+li code,
+td code {
+    background-color: var(--color-canvas-subtle);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+}

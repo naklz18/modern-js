@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Промисы и async/await | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                  <li><a href="../index.html" class="Header-link">Главная</a></li>
+                  <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                  <li><a href="functions.html" class="Header-link">Функции</a></li>
+                  <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                  <li><a href="classes.html" class="Header-link">Классы</a></li>
+                  <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                  <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                  <li><a href="async.html" class="Header-link" aria-current="page">Асинхронность</a></li>
+                  <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                  <li><a href="sources.html" class="Header-link">Источники</a></li>                                 
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Промисы и async/await</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Асинхронное программирование в современном стиле
+                </p>
+
+                <section class="mb-5">
+                    <h2>Проблема колбэков</h2>
+                    <p>До ES6 асинхронные операции обрабатывались через колбэки, что часто приводило к «аду колбэков» (callback hell) — глубоко вложенным, трудным для чтения и поддержки конструкциям.</p>
+
+                    <pre><code>getUser(id, (user) =&gt; {
+    getOrders(user.id, (orders) =&gt; {
+        getDetails(orders[0].id, (details) =&gt; {
+            console.log(details);
+        });
+    });
+});</code></pre>
+
+                    <p>Чем больше шагов — тем глубже вложенность и тем сложнее обрабатывать ошибки.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Промисы (Promises)</h2>
+                    <p>Промисы появились в ES6 как объекты, представляющие eventual completion (или failure) асинхронной операции. Они позволяют организовать асинхронный код более линейно.</p>
+
+                    <h3 class="mt-4">Создание промиса</h3>
+                    <pre><code>const promise = new Promise((resolve, reject) =&gt; {
+    const success = true;
+    if (success) {
+        resolve("Данные получены");
+    } else {
+        reject("Ошибка");
+    }
+});</code></pre>
+
+                    <h3 class="mt-4">Обработка через .then() и .catch()</h3>
+                    <pre><code>promise
+    .then((result) =&gt; {
+        console.log(result); // "Данные получены"
+    })
+    .catch((error) =&gt; {
+        console.error(error);
+    })
+    .finally(() =&gt; {
+        console.log("Операция завершена");
+    });</code></pre>
+
+                    <h3 class="mt-4">Цепочки промисов</h3>
+                    <p>Плоский стиль вместо вложенных колбэков:</p>
+                    <pre><code>getUser(id)
+    .then((user) =&gt; getOrders(user.id))
+    .then((orders) =&gt; getDetails(orders[0].id))
+    .then((details) =&gt; console.log(details))
+    .catch((error) =&gt; console.error(error));</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>async/await</h2>
+                    <p>В ECMAScript 2017 появились <code>async</code>-функции и ключевое слово <code>await</code> — синтаксический сахар над промисами. <code>async</code> превращает обычную функцию в асинхронную, оборачивая возвращаемое значение в Promise. <code>await</code> приостанавливает выполнение функции до разрешения промиса.</p>
+
+                    <pre><code>async function loadData() {
+    try {
+        const user = await getUser(id);
+        const orders = await getOrders(user.id);
+        const details = await getDetails(orders[0].id);
+        console.log(details);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+loadData();</code></pre>
+
+                    <p>Такой код читается как синхронный, но выполняется асинхронно. Это значительно улучшает читаемость и поддерживаемость.</p>
+
+                    <h3 class="mt-4">Возврат значения</h3>
+                    <p>Любая <code>async</code>-функция возвращает промис, даже если вы возвращаете обычное значение:</p>
+                    <pre><code>async function getValue() {
+    return 42;
+}
+
+getValue().then((v) =&gt; console.log(v)); // 42</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Параллельное выполнение: Promise.all</h2>
+                    <p>Если несколько асинхронных задач не зависят друг от друга — запускайте их параллельно через <code>Promise.all()</code>, а не последовательно через <code>await</code>:</p>
+
+                    <pre><code>// Медленно — ждём по очереди
+const user = await getUser();
+const posts = await getPosts();
+
+// Быстро — параллельно
+const [user, posts] = await Promise.all([
+    getUser(),
+    getPosts()
+]);</code></pre>
+
+                    <h3 class="mt-4">Другие комбинаторы</h3>
+                    <ul>
+                        <li><code>Promise.allSettled()</code> — ждёт все промисы и возвращает массив результатов (успешных и отклонённых).</li>
+                        <li><code>Promise.any()</code> — возвращает результат первого успешно завершившегося промиса.</li>
+                        <li><code>Promise.race()</code> — возвращает результат первого завершившегося (неважно, успех или ошибка).</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сравнение стилей</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Колбэки vs Промисы vs async/await</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Стиль</th>
+                                    <th scope="col">Читаемость</th>
+                                    <th scope="col">Обработка ошибок</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Колбэки</th>
+                                    <td>Низкая (вложенность)</td>
+                                    <td>Сложная</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Промисы</th>
+                                    <td>Средняя</td>
+                                    <td>Через .catch()</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">async/await</th>
+                                    <td>Высокая</td>
+                                    <td>Через try/catch</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Предпочитайте <code>async/await</code> вместо цепочек <code>.then()</code> — код линейнее и легче отлаживается.</li>
+                        <li>Всегда оборачивайте <code>await</code> в <code>try/catch</code> — иначе ошибка «упадёт» в необработанный промис.</li>
+                        <li>Не используйте <code>await</code> внутри циклов, если итерации независимы — вместо этого <code>Promise.all()</code>.</li>
+                        <li>Помните: <code>await</code> можно использовать только внутри <code>async</code>-функции (или на верхнем уровне модуля с ES2022).</li>
+                        <li>Не забывайте про <code>.finally()</code>, если нужно что-то выполнить независимо от результата.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="destructuring.html">Деструктуризация</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Если <code>try/catch</code> становится огромным — вынесите каждый <code>await</code> в отдельную маленькую функцию. Такой код проще тестировать.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

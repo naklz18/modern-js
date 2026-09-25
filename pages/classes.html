@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Классы и модули | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link" aria-current="page">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Классы, наследование и модули</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    ООП и организация кода
+                </p>
+
+                <section class="mb-5">
+                    <h2>Классы</h2>
+                    <p>ES6 ввёл ключевое слово <code>class</code>, которое предоставляет более элегантный способ создания объектов и реализации наследования по сравнению с ручной работой с прототипами. Синтаксис классов в JavaScript ближе к традиционным объектно-ориентированным языкам, что упрощает переход разработчикам из других экосистем.</p>
+
+                    <pre><code>class User {
+    constructor(name, age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    greet() {
+        return `Привет, я ${this.name}!`;
+    }
+}
+
+const ivan = new User("Иван", 30);
+console.log(ivan.greet()); // "Привет, я Иван!"</code></pre>
+
+                    <h3 class="mt-4">Что внутри класса</h3>
+                    <ul>
+                        <li><code>constructor()</code> — вызывается автоматически при создании объекта через <code>new</code>.</li>
+                        <li><strong>Методы</strong> — определяются внутри тела класса без ключевого слова <code>function</code>.</li>
+                        <li><strong>Статические методы</strong> — объявляются с ключевым словом <code>static</code>, вызываются на самом классе, а не на экземпляре.</li>
+                        <li><strong>Геттеры и сеттеры</strong> — через <code>get</code> и <code>set</code>.</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Наследование через extends</h2>
+                    <p>Ключевое слово <code>extends</code> создаёт класс, который является дочерним по отношению к другому классу. Конструктор родительского класса вызывается через <code>super()</code>.</p>
+
+                    <pre><code>class Animal {
+    constructor(name) {
+        this.name = name;
+    }
+
+    speak() {
+        return `${this.name} издаёт звук`;
+    }
+}
+
+class Dog extends Animal {
+    constructor(name, breed) {
+        super(name);           // вызов конструктора родителя
+        this.breed = breed;
+    }
+
+    speak() {
+        return `${this.name} лает`;
+    }
+}
+
+const rex = new Dog("Рекс", "овчарка");
+console.log(rex.speak()); // "Рекс лает"
+console.log(rex.breed);   // "овчарка"</code></pre>
+
+                    <p>Если дочерний класс определяет собственный <code>constructor</code>, он <strong>обязан</strong> вызвать <code>super()</code> до обращения к <code>this</code>.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Приватные поля</h2>
+                    <p>ES2022 добавил приватные поля через символ <code>#</code>. Такие свойства и методы доступны только внутри класса.</p>
+
+                    <pre><code>class Counter {
+    #count = 0;
+
+    increment() {
+        this.#count++;
+    }
+
+    get value() {
+        return this.#count;
+    }
+}
+
+const c = new Counter();
+c.increment();
+console.log(c.value);   // 1
+console.log(c.#count);  // SyntaxError</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Модули: import и export</h2>
+                    <p>ES6 добавил в JavaScript встроенную модульную систему. Любой файл, содержащий инструкцию <code>import</code> или <code>export</code> на верхнем уровне, считается модулем.</p>
+
+                    <h3 class="mt-4">Именованный экспорт</h3>
+                    <pre><code>// utils.js
+export const PI = 3.14;
+export function double(x) {
+    return x * 2;
+}</code></pre>
+
+                    <pre><code>// main.js
+import { PI, double } from "./utils.js";
+console.log(PI);       // 3.14
+console.log(double(5)); // 10</code></pre>
+
+                    <h3 class="mt-4">Экспорт по умолчанию</h3>
+                    <pre><code>// user.js
+export default class User {
+    constructor(name) {
+        this.name = name;
+    }
+}</code></pre>
+
+                    <pre><code>// main.js
+import User from "./user.js";
+const user = new User("Иван");</code></pre>
+
+                    <h3 class="mt-4">Переименование при импорте</h3>
+                    <pre><code>import { double as d } from "./utils.js";
+console.log(d(5)); // 10</code></pre>
+
+                    <h3 class="mt-4">Импорт всего модуля</h3>
+                    <pre><code>import * as utils from "./utils.js";
+console.log(utils.PI);
+console.log(utils.double(5));</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Подключение модулей в браузере</h2>
+                    <p>Чтобы использовать модули в HTML, подключите скрипт с атрибутом <code>type="module"</code>:</p>
+                    <pre><code>&lt;script type="module" src="js/main.js"&gt;&lt;/script&gt;</code></pre>
+                    <p>Важно: модули работают только при загрузке через сервер (http:// или https://), а не через <code>file://</code>. В VS Code используйте расширение <strong>Live Server</strong>.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сравнение классов и функций-конструкторов</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Класс vs функция-конструктор</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Характеристика</th>
+                                    <th scope="col">Функция-конструктор</th>
+                                    <th scope="col">Класс</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Синтаксис</th>
+                                    <td>Многословный</td>
+                                    <td>Компактный</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Поднятие (hoisting)</th>
+                                    <td>Да</td>
+                                    <td>Нет</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Вызов без new</th>
+                                    <td>Работает</td>
+                                    <td>TypeError</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Приватные поля</th>
+                                    <td>Через замыкания</td>
+                                    <td>Через #</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Наследование</th>
+                                    <td>Через prototype</td>
+                                    <td>Через extends</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Используйте классы, когда у вас есть несколько объектов с одинаковой структурой и поведением.</li>
+                        <li>Не злоупотребляйте наследованием — предпочитайте композицию, если цепочка классов становится глубокой.</li>
+                        <li>Приватные поля <code>#</code> предпочтительнее «договорённости» с подчёркиванием (<code>_field</code>).</li>
+                        <li>Разделяйте код на модули: один модуль — одна ответственность.</li>
+                        <li>Экспорт по умолчанию удобен для главного класса/функции модуля, именованный — для утилит.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="destructuring.html">Деструктуризация</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Если метод класса не использует <code>this</code> — сделайте его <code>static</code>. Это уберёт лишнюю зависимость от экземпляра.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

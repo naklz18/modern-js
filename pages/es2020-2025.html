@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Возможности ES2020–ES2025 | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+                <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link" aria-current="page">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li> 
+        </nav>
+    </header>
+
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Возможности ES2020–ES2025</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Что нового появилось в JavaScript за последние годы
+                </p>
+
+                <section class="mb-5">
+                    <h2>ES2020</h2>
+                    <p><strong>Опциональная цепочка (<code>?.</code>)</strong> позволяет безопасно обращаться к вложенным свойствам объектов, не беспокоясь о том, что промежуточное значение может быть <code>null</code> или <code>undefined</code>.</p>
+                    <pre><code>const user = { address: { city: "Москва" } };
+console.log(user?.address?.city);   // "Москва"
+console.log(user?.phone?.number);   // undefined (без ошибки)</code></pre>
+
+                    <p><strong>Оператор нулевого слияния (<code>??</code>)</strong> предоставляет значение по умолчанию только для <code>null</code> и <code>undefined</code>, в отличие от <code>||</code>, который срабатывает на любое «ложное» значение.</p>
+                    <pre><code>const count = 0;
+console.log(count || 10); // 10 — потому что 0 это falsy
+console.log(count ?? 10); // 0 — потому что 0 это не null/undefined</code></pre>
+
+                    <p><strong>BigInt</strong> — новый примитивный тип для работы с целыми числами произвольной точности.</p>
+                    <pre><code>const big = 9007199254740991n;
+console.log(big + 1n); // 9007199254740992n</code></pre>
+
+                    <p><strong>Promise.allSettled()</strong> — ждёт завершения всех промисов и возвращает массив результатов, независимо от того, были ли они успешными или отклонёнными.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>ES2021</h2>
+                    <p><strong>String.prototype.replaceAll()</strong> — заменить все вхождения подстроки, а не только первое.</p>
+                    <pre><code>"a-b-c".replaceAll("-", "_"); // "a_b_c"</code></pre>
+
+                    <p><strong>Promise.any()</strong> — возвращает результат первого успешно завершившегося промиса.</p>
+
+                    <p><strong>Логические операторы присваивания (<code>??=</code>, <code>||=</code>, <code>&&=</code>)</strong> — совмещают проверку и присваивание.</p>
+                    <pre><code>let user = null;
+user ??= "Гость"; // user = "Гость"</code></pre>
+
+                    <p><strong>Числовые разделители</strong> — улучшают читаемость больших чисел.</p>
+                    <pre><code>const million = 1_000_000;</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>ES2022</h2>
+                    <p><strong>Top-level await</strong> — позволяет использовать <code>await</code> на верхнем уровне модуля, вне асинхронной функции.</p>
+                    <pre><code>const response = await fetch("/api/data");
+const data = await response.json();</code></pre>
+
+                    <p><strong>Приватные поля классов (<code>#field</code>)</strong> — делают свойства и методы действительно приватными.</p>
+                    <pre><code>class Counter {
+    #count = 0;
+    increment() { this.#count++; }
+}</code></pre>
+
+                    <p><strong>Статические блоки</strong> — позволяют выполнять инициализацию статических свойств класса.</p>
+                    <pre><code>class Config {
+    static data;
+    static {
+        Config.data = loadConfig();
+    }
+}</code></pre>
+
+                    <p><strong>Метод .at()</strong> — получить элементы по относительному индексу.</p>
+                    <pre><code>[1, 2, 3].at(-1); // 3</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>ES2023</h2>
+                    <p><strong>Иммутабельные методы массивов:</strong> <code>toSorted()</code>, <code>toReversed()</code>, <code>with()</code> — не изменяют исходный массив, а возвращают новый.</p>
+                    <pre><code>const nums = [3, 1, 2];
+const sorted = nums.toSorted();
+console.log(nums);   // [3, 1, 2] — не изменён
+console.log(sorted); // [1, 2, 3]</code></pre>
+
+                    <p><strong>findLast() и findLastIndex()</strong> — ищут элементы с конца массива.</p>
+                    <pre><code>[1, 2, 3, 4].findLast(n => n % 2 === 0); // 4</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>ES2024</h2>
+                    <p><strong>Object.groupBy() и Map.groupBy()</strong> — группировка элементов коллекции по ключу.</p>
+                    <pre><code>const items = [
+    { type: "fruit", name: "яблоко" },
+    { type: "veg", name: "морковь" },
+    { type: "fruit", name: "банан" }
+];
+
+const grouped = Object.groupBy(items, item => item.type);</code></pre>
+
+                    <p><strong>Promise.withResolvers()</strong> — упрощает создание промисов с внешним управлением.</p>
+
+                    <p><strong>ArrayBuffer</strong> получил возможности изменения размера и передачи между воркерами.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>ES2025</h2>
+                    <p><strong>Новый глобальный объект Iterator</strong> с методами для работы с итераторами.</p>
+
+                    <p><strong>Методы Set.prototype</strong> для операций над множествами: объединение, пересечение, разность.</p>
+
+                    <p><strong>Импорт JSON-модулей</strong> — теперь можно импортировать JSON напрямую:</p>
+                    <pre><code>import data from "./data.json" with { type: "json" };</code></pre>
+
+                    <p><strong>RegExp.escape()</strong> — безопасное экранирование строк для регулярных выражений.</p>
+
+                    <p><strong>Promise.try()</strong> — обработка синхронных и асинхронных ошибок единообразно.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Сводная таблица</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Ключевые нововведения по версиям</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Версия</th>
+                                    <th scope="col">Год</th>
+                                    <th scope="col">Главное</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><th scope="row">ES2020</th><td>2020</td><td>?. , ??, BigInt, allSettled</td></tr>
+                                <tr><th scope="row">ES2021</th><td>2021</td><td>replaceAll, Promise.any, ??=</td></tr>
+                                <tr><th scope="row">ES2022</th><td>2022</td><td>Top-level await, #private, .at()</td></tr>
+                                <tr><th scope="row">ES2023</th><td>2023</td><td>toSorted, toReversed, with</td></tr>
+                                <tr><th scope="row">ES2024</th><td>2024</td><td>Object.groupBy, withResolvers</td></tr>
+                                <tr><th scope="row">ES2025</th><td>2025</td><td>Iterator, Set methods, Promise.try</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Используйте <code>?.</code> и <code>??</code> вместо громоздких проверок — код становится короче и безопаснее.</li>
+                        <li>Применяйте иммутабельные методы (<code>toSorted</code>, <code>with</code>) — они снижают количество багов.</li>
+                        <li>Top-level await упрощает инициализацию модулей, но не злоупотребляйте им в библиотеках — это может замедлить загрузку.</li>
+                        <li>Перед использованием новых возможностей проверьте поддержку в целевых браузерах (Can I use).</li>
+                        <li>Для production-сборки используйте Babel или Vite — они транспилируют новый синтаксис под старые браузеры.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Не гонитесь за всеми новинками сразу. Выучите <code>?.</code>, <code>??</code>, <code>toSorted</code> и <code>.at()</code> — они покрывают 80% повседневных задач.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Деструктуризация, spread и rest | JS Modern</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="../index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+              <li><a href="../index.html" class="Header-link">Главная</a></li>
+                <li><a href="variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="functions.html" class="Header-link">Функции</a></li>
+                <li><a href="destructuring.html" class="Header-link" aria-current="page">Деструктуризация</a></li>
+                <li><a href="classes.html" class="Header-link">Классы</a></li>
+                <li><a href="collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="sources.html" class="Header-link">Источники</a></li>
+                </ul>
+        </nav>
+    </header>
+
+    <!-- КОНТЕНТ -->
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+
+            <main class="column one-half">
+                <h1>Деструктуризация, spread и rest</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Элегантная работа с массивами и объектами
+                </p>
+
+                <section class="mb-5">
+                    <h2>Деструктуризация объектов</h2>
+                    <p>Деструктурирующее присваивание позволяет извлекать свойства из объектов и присваивать их переменным в одной лаконичной конструкции. Это значительно сокращает количество строк кода.</p>
+
+                    <p>До ES6:</p>
+                    <pre><code>const user = { name: "Иван", age: 30 };
+const name = user.name;
+const age = user.age;
+console.log(name, age); // "Иван" 30</code></pre>
+
+                    <p>С деструктуризацией:</p>
+                    <pre><code>const user = { name: "Иван", age: 30 };
+const { name, age } = user;
+console.log(name, age); // "Иван" 30</code></pre>
+
+                    <h3 class="mt-4">Переименование переменных</h3>
+                    <p>Если имя свойства не подходит под имя переменной, можно его переименовать:</p>
+                    <pre><code>const user = { name: "Иван", age: 30 };
+const { name: userName, age: userAge } = user;
+console.log(userName); // "Иван"</code></pre>
+
+                    <h3 class="mt-4">Значения по умолчанию</h3>
+                    <pre><code>const user = { name: "Иван" };
+const { name, age = 18 } = user;
+console.log(age); // 18</code></pre>
+
+                    <h3 class="mt-4">Вложенная деструктуризация</h3>
+                    <pre><code>const user = {
+    name: "Иван",
+    address: {
+        city: "Москва",
+        zip: "101000"
+    }
+};
+const { address: { city, zip } } = user;
+console.log(city); // "Москва"</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Деструктуризация массивов</h2>
+                    <p>Работает аналогично, но с элементами массива. Порядок важен — переменные получают значения по позиции.</p>
+
+                    <pre><code>const colors = ["красный", "зелёный", "синий"];
+const [first, second, third] = colors;
+console.log(first);  // "красный"
+console.log(second); // "зелёный"</code></pre>
+
+                    <h3 class="mt-4">Пропуск элементов</h3>
+                    <pre><code>const colors = ["красный", "зелёный", "синий"];
+const [first, , third] = colors;
+console.log(third); // "синий"</code></pre>
+
+                    <h3 class="mt-4">Rest-элемент в массиве</h3>
+                    <pre><code>const numbers = [1, 2, 3, 4, 5];
+const [first, ...rest] = numbers;
+console.log(first); // 1
+console.log(rest);  // [2, 3, 4, 5]</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Spread-оператор</h2>
+                    <p>Spread-оператор <code>...</code> «разворачивает» массив или объект на отдельные элементы. Чаще всего используется для копирования и объединения.</p>
+
+                    <h3 class="mt-4">Копирование массива</h3>
+                    <pre><code>const original = [1, 2, 3];
+const copy = [...original];
+console.log(copy); // [1, 2, 3]</code></pre>
+
+                    <h3 class="mt-4">Объединение массивов</h3>
+                    <pre><code>const a = [1, 2];
+const b = [3, 4];
+const combined = [...a, ...b];
+console.log(combined); // [1, 2, 3, 4]</code></pre>
+
+                    <h3 class="mt-4">Копирование и объединение объектов</h3>
+                    <pre><code>const user = { name: "Иван", age: 30 };
+const updated = { ...user, age: 31 };
+console.log(updated); // { name: "Иван", age: 31 }</code></pre>
+
+                    <h3 class="mt-4">Передача массива в функцию</h3>
+                    <pre><code>const numbers = [3, 7, 2, 9];
+console.log(Math.max(...numbers)); // 9</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Rest-параметры</h2>
+                    <p>Rest-параметры используют тот же синтаксис <code>...</code>, но выполняют противоположную задачу: «сворачивают» произвольное количество аргументов в массив.</p>
+
+                    <pre><code>function sum(...numbers) {
+    return numbers.reduce((acc, n) => acc + n, 0);
+}
+
+console.log(sum(1, 2, 3));       // 6
+console.log(sum(1, 2, 3, 4, 5)); // 15</code></pre>
+
+                    <p>Rest-параметр всегда должен идти последним в списке параметров:</p>
+                    <pre><code>function log(level, ...messages) {
+    console.log(`[${level}]`, ...messages);
+}
+
+log("INFO", "Сервер запущен", "порт 3000");</code></pre>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Spread vs rest: в чём разница</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Сравнение двух применений оператора ...</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Синтаксис</th>
+                                    <th scope="col">Где используется</th>
+                                    <th scope="col">Что делает</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">Spread</th>
+                                    <td>При вызове функции, в литералах массивов и объектов</td>
+                                    <td>Разворачивает итерируемое в отдельные элементы</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">Rest</th>
+                                    <td>В списке параметров функции, в деструктуризации</td>
+                                    <td>Собирает оставшиеся элементы в массив</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Лучшие практики</h2>
+                    <ul>
+                        <li>Используйте деструктуризацию в параметрах функций — это делает сигнатуру явной:</li>
+                    </ul>
+                    <pre><code>function greet({ name, age }) {
+    return `Привет, ${name}! Тебе ${age}.`;
+}
+
+greet({ name: "Иван", age: 30 });</code></pre>
+                    <ul>
+                        <li>Копируйте массивы и объекты через spread вместо <code>slice()</code> или <code>Object.assign()</code> — короче и безопаснее.</li>
+                        <li>Не мутируйте исходные данные: <code>const updated = { ...user, age: 31 }</code> предпочтительнее, чем <code>user.age = 31</code>.</li>
+                        <li>Rest-параметр ставьте последним — иначе будет синтаксическая ошибка.</li>
+                    </ul>
+                </section>
+            </main>
+
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Другие разделы</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="variables.html">Переменные</a></li>
+                            <li class="mb-2"><a href="functions.html">Стрелочные функции</a></li>
+                            <li class="mb-2"><a href="classes.html">Классы и модули</a></li>
+                            <li class="mb-2"><a href="async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="collections.html">Коллекции</a></li>
+                            <li><a href="best-practices.html">Лучшие практики</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Совет</h3>
+                    </div>
+                    <div class="Box-body">
+                        <p class="color-fg-muted mb-0">Деструктуризация особенно удобна при работе с ответами API: <code>const { data, status } = await fetch(...)</code> — сразу получаете нужные поля.</p>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+</html>

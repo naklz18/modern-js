@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ru" data-color-mode="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Современный JavaScript (ES6+) | Главная</title>
+    
+    <!-- Primer CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/@primer/css@^20.2.4/dist/primer.css" />
+    <!-- Кастомные стили -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ШАПКА -->
+    <header class="Header" id="header">
+        <div class="Header-item">
+            <button class="btn-octicon" id="burger" aria-label="Открыть меню">
+                <svg height="24" viewBox="0 0 24 24" width="24" fill="currentColor">
+                    <path d="M3 6h18v2H3V6zm0 5h18v2H3v-2zm0 5h18v2H3v-2z"></path>
+                </svg>
+            </button>
+        </div>
+        <div class="Header-item Header-item--full">
+            <a href="index.html" class="Header-link f4 text-bold">JS Modern</a>
+        </div>
+        <nav class="Header-nav" id="nav">
+            <ul class="Header-menu">
+               <li><a href="index.html" class="Header-link" aria-current="page">Главная</a></li>
+                <li><a href="pages/variables.html" class="Header-link">Переменные</a></li>
+                <li><a href="pages/functions.html" class="Header-link">Функции</a></li>
+                <li><a href="pages/destructuring.html" class="Header-link">Деструктуризация</a></li>
+                <li><a href="pages/classes.html" class="Header-link">Классы</a></li>
+                <li><a href="pages/collections.html" class="Header-link">Коллекции</a></li>
+                <li><a href="pages/es2020-2025.html" class="Header-link">ES2020+</a></li>
+                <li><a href="pages/async.html" class="Header-link">Асинхронность</a></li>
+                <li><a href="pages/best-practices.html" class="Header-link">Практики</a></li>
+                <li><a href="pages/sources.html" class="Header-link">Источники</a></li>
+          </ul>
+        </nav>
+    </header>
+<img 
+    src="../img/js.png"
+    alt="Современный JavaScript: пример кода"
+    title="JavaScript на практике"
+    class="main-image"
+    width="800"
+    height="450"
+    loading="lazy">
+
+    <!-- ОСНОВНОЙ КОНТЕНТ + САЙДБАР -->
+    <div class="container-xl p-responsive">
+        <div class="columns mt-4">
+            
+            <!-- MAIN -->
+            <main class="column one-half">
+                <h1>Современный JavaScript (ES6+)</h1>
+                <p class="f4 color-fg-muted mb-4">
+                    Возможности, критерии выбора и лучшие практики
+                </p>
+
+                <section class="mb-5">
+                    <h2>Введение</h2>
+                    <p>JavaScript прошёл долгий путь от простого языка для «оживления» веб-страниц до универсальной платформы, на которой строятся серверные приложения, мобильные и десктопные программы, инструменты командной строки и даже системы машинного обучения. Ключевым моментом в этой эволюции стало принятие в июне 2015 года шестой редакции спецификации ECMAScript — ES6, также известной как ECMAScript 2015.</p>
+                    <p>Сегодня термин «ES6+» охватывает не только сам ES6, но и все последующие версии спецификации: ES2016–ES2025. Каждая из этих версий добавила важные возможности, которые делают код более выразительным, безопасным и производительным.</p>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Разделы руководства</h2>
+                    <ul>
+                        <li><a href="pages/variables.html"><strong>Переменные: let и const</strong></a> — блочная область видимости и иммутабельность</li>
+                        <li><a href="pages/functions.html"><strong>Стрелочные функции и шаблонные строки</strong></a> — краткий синтаксис и лексический this</li>
+                        <li><a href="pages/destructuring.html"><strong>Деструктуризация, spread и rest</strong></a> — элегантная работа с массивами и объектами</li>
+                        <li><a href="pages/classes.html"><strong>Классы и модули</strong></a> — ООП и организация кода</li>
+                        <li><a href="pages/async.html"><strong>Промисы и async/await</strong></a> — асинхронное программирование</li>
+                        <li><a href="pages/collections.html"><strong>Коллекции и методы массивов</strong></a> — Map, Set и функциональные паттерны</li>
+                        <li><a href="pages/es2020-2025.html"><strong>Возможности ES2020–ES2025</strong></a> — опциональная цепочка, top-level await и другое</li>
+                        <li><a href="pages/best-practices.html"><strong>Лучшие практики</strong></a> — иммутабельность, производительность, инструменты сборки</li>
+                    </ul>
+                </section>
+
+                <section class="mb-5">
+                    <h2>Краткое сравнение версий ECMAScript</h2>
+                    <div class="table-wrapper">
+                        <table>
+                            <caption>Ключевые возможности по версиям</caption>
+                            <thead>
+                                <tr>
+                                    <th scope="col">Версия</th>
+                                    <th scope="col">Год</th>
+                                    <th scope="col">Ключевые возможности</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th scope="row">ES6</th>
+                                    <td>2015</td>
+                                    <td>let/const, стрелочные функции, классы, модули, промисы</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">ES2017</th>
+                                    <td>2017</td>
+                                    <td>async/await, Object.entries/values</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">ES2020</th>
+                                    <td>2020</td>
+                                    <td>Опциональная цепочка ?., нулевое слияние ??, BigInt</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">ES2022</th>
+                                    <td>2022</td>
+                                    <td>Top-level await, приватные поля #, .at()</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">ES2023</th>
+                                    <td>2023</td>
+                                    <td>toSorted(), toReversed(), with()</td>
+                                </tr>
+                                <tr>
+                                    <th scope="row">ES2025</th>
+                                    <td>2025</td>
+                                    <td>Методы Set, импорт JSON, Promise.try()</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+            <div class="video-wrapper">
+                <iframe 
+                    src="https://rutube.ru/play/embed/67a03d33a97baf363f20715f44bc5bb5/"
+                    title="Обзор современного JavaScript"
+                    allow="clipboard-write; autoplay"
+                    allowfullscreen
+                    loading="lazy">
+                </iframe>
+            </div>
+            <!-- САЙДБАР -->
+            <aside class="column one-half">
+                <div class="Box">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Подписка на новости</h3>
+                    </div>
+                    <div class="Box-body">
+                        <form>
+                            <input type="email" class="form-control input-block mb-2" placeholder="Ваш Email" required>
+                            <button type="submit" class="btn btn-primary btn-block">Подписаться</button>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="Box mt-4">
+                    <div class="Box-header">
+                        <h3 class="Box-title">Быстрая навигация</h3>
+                    </div>
+                    <div class="Box-body">
+                        <ul class="list-style-none">
+                            <li class="mb-2"><a href="pages/async.html">Асинхронность</a></li>
+                            <li class="mb-2"><a href="pages/es2020-2025.html">ES2020–ES2025</a></li>
+                            <li class="mb-2"><a href="pages/best-practices.html">Лучшие практики</a></li>
+                            <li><a href="pages/sources.html">Источники</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer mt-6 py-4 border-top">
+        <div class="container-xl p-responsive">
+            <p class="color-fg-muted">&copy; 2026 JS Modern. Все права защищены.</p>
+            <ul class="list-style-none d-flex flex-wrap gap-3">
+                <li><a href="pages/sources.html">Библиографический список</a></li>
+                <li><a href="#">Политика конфиденциальности</a></li>
+                <li><a href="#">Контакты</a></li>
+            </ul>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
